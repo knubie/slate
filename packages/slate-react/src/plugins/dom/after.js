@@ -68,6 +68,7 @@ function AfterPlugin(options = {}) {
         const charCodeOfText = text.charCodeAt(0)
 
         if (
+          lastKeyDown !== null &&
           Hotkeys.isLongPressSelect({ key: lastKeyDown }) &&
           lastKeyDown !== text &&
           charCodeOfText >= 192 && // Unicode range of accented latin chars
