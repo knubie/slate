@@ -30,6 +30,17 @@ function BeforePlugin() {
   let isComposing = false
   let isCopying = false
   let isDragging = false
+  let hasInsertedComposition = false
+
+  /**
+    * The before plugin queries.
+    *
+    * @type {Object}
+    */
+
+   const queries = {
+     isComposing: () => isComposing,
+   }
 
   /**
    * On before input.
@@ -49,6 +60,7 @@ function BeforePlugin() {
     if (isSynthetic && HAS_INPUT_EVENTS_LEVEL_2) return
 
     debug('onBeforeInput', { event })
+    hasInsertedComposition = true
     next()
   }
 
@@ -112,6 +124,8 @@ function BeforePlugin() {
   function onCompositionEnd(event, editor, next) {
     const n = compositionCount
 
+    const { data } = event
+
     // The `count` check here ensures that if another composition starts
     // before the timeout has closed out this one, we will abort unsetting the
     // `isComposing` flag, since a composition is still in affect.
@@ -123,7 +137,13 @@ function BeforePlugin() {
     // event is fired for 'enter', it will think that composition has already
     // ended and will insert a new line.
     setTimeout(() => {
+      // If compositionEnd is fired *before* beforeInput, then the user most
+      // likey has changed selection without explicitly completing the
+      // composition. That means beforeInput will never get fired and the text
+      // won't be inserted.
+
       if (compositionCount > n) return
+      if (!hasInsertedComposition) editor.insertText(data)
       isComposing = false
     })
 
@@ -154,6 +174,7 @@ function BeforePlugin() {
 
   function onCompositionStart(event, editor, next) {
     isComposing = true
+    hasInsertedComposition = false;
     compositionCount++
 
     const { value } = editor
@@ -473,6 +494,7 @@ function BeforePlugin() {
    */
 
   return {
+    queries,
     onBeforeInput,
     onBlur,
     onClick,
