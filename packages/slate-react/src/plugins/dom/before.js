@@ -24,12 +24,19 @@ const debug = Debug('slate:before')
  * @return {Object}
  */
 
+// FIXME: Where to put this?
+function isHangul(text) {
+  const charCode = text.charCodeAt(text.length - 1)
+  return (charCode >= 4352 && charCode <= 4607) || (charCode >= 44032 && charCode <= 55215)
+}
+
 function BeforePlugin() {
   let activeElement = null
   let compositionCount = 0
   let isComposing = false
   let isCopying = false
   let isDragging = false
+  let isHangul = false
 
   /**
    * On before input.
@@ -48,6 +55,11 @@ function BeforePlugin() {
     // allowing React's synthetic polyfill, so we need to ignore synthetics.
     if (isSynthetic && HAS_INPUT_EVENTS_LEVEL_2) return
 
+    if (isHangul(event.data)) {
+      isHangul = true
+    } else {
+      isHangul = false
+    }
     debug('onBeforeInput', { event })
     next()
   }
@@ -390,7 +402,11 @@ function BeforePlugin() {
     // typing. However, certain characters also move the selection before
     // we're able to handle it, so prevent their default behavior.
     if (isComposing) {
+      // TODO: For hangul, default is fine for everything except backspace.
       if (Hotkeys.isCompose(event)) event.preventDefault()
+      // if (!(event.nativeEvent.key == 'Enter' && isHangul)) {
+      //   if (Hotkeys.isCompose(event)) event.preventDefault()
+      // }
       return
     }
 
