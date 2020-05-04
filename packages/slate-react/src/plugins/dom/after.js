@@ -44,8 +44,10 @@ function AfterPlugin(options = {}) {
     // isn't a true `beforeinput` event with meaningful information. It only
     // gets triggered for character insertions, so we can just insert directly.
     if (isSynthetic) {
-      event.preventDefault()
-      editor.insertText(event.data)
+      console.log('synth');
+      console.log(event.data);
+      // event.preventDefault()
+      // editor.insertText(event.data)
       return next()
     }
 
@@ -108,6 +110,11 @@ function AfterPlugin(options = {}) {
 
         break
       }
+
+      // case 'insertCompositionText': {
+      //   const text = event.data
+      //   break
+      // }
 
       case 'insertFromYank':
       case 'insertReplacementText':
@@ -406,6 +413,7 @@ function AfterPlugin(options = {}) {
    */
 
   function onInput(event, editor, next) {
+    return
     debug('onInput')
 
     const window = getWindow(event.target)
@@ -433,6 +441,7 @@ function AfterPlugin(options = {}) {
    */
 
   function onKeyDown(event, editor, next) {
+    return
     debug('onKeyDown', { event })
 
     const { value } = editor
@@ -647,6 +656,7 @@ function AfterPlugin(options = {}) {
    */
 
   function onSelect(event, editor, next) {
+    return
     debug('onSelect', { event })
     const window = getWindow(event.target)
     const domSelection = window.getSelection()

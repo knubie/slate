@@ -155,7 +155,7 @@ class Content extends React.Component {
 
     // COMPAT: Restrict scope of `beforeinput` to clients that support the
     // Input Events Level 2 spec, since they are preventable events.
-    if (HAS_INPUT_EVENTS_LEVEL_2) {
+    if (true) {
       this.ref.current.addEventListener(
         'beforeinput',
         this.handlers.onBeforeInput
@@ -181,7 +181,7 @@ class Content extends React.Component {
       )
     }
 
-    if (HAS_INPUT_EVENTS_LEVEL_2) {
+    if (true) {
       this.ref.current.removeEventListener(
         'beforeinput',
         this.handlers.onBeforeInput
@@ -428,7 +428,7 @@ class Content extends React.Component {
    */
 
   onEvent(handler, event) {
-    debug('onEvent', handler)
+    debug('onEvent', handler, event)
 
     const nativeEvent = event.nativeEvent || event
     const isUndoRedo =

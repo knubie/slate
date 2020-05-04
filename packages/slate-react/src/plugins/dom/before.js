@@ -41,6 +41,8 @@ function BeforePlugin() {
    */
 
   function onBeforeInput(event, editor, next) {
+    // debug('onBeforeInput', { event })
+    // return
     const isSynthetic = !!event.nativeEvent
     if (editor.readOnly) return
     isUserActionPerformed = true
@@ -112,6 +114,7 @@ function BeforePlugin() {
    */
 
   function onCompositionEnd(event, editor, next) {
+    return
     const n = compositionCount
     isUserActionPerformed = true
 
@@ -150,6 +153,7 @@ function BeforePlugin() {
    */
 
   function onCompositionStart(event, editor, next) {
+    return
     isComposing = true
     compositionCount++
 
@@ -375,6 +379,7 @@ function BeforePlugin() {
    */
 
   function onInput(event, editor, next) {
+    return
     if (isComposing) return
     if (editor.value.selection.isBlurred) return
     isUserActionPerformed = true
@@ -391,15 +396,17 @@ function BeforePlugin() {
    */
 
   function onKeyDown(event, editor, next) {
+    return
     if (editor.readOnly) return
 
     // When composing, we need to prevent all hotkeys from executing while
     // typing. However, certain characters also move the selection before
     // we're able to handle it, so prevent their default behavior.
-    if (isComposing) {
-      if (Hotkeys.isCompose(event)) event.preventDefault()
-      return
-    }
+    // 'enter' is not a compose event for Hangul.
+    // if (isComposing) {
+    //   if (Hotkeys.isCompose(event)) event.preventDefault()
+    //   return
+    // }
 
     // Certain hotkeys have native editing behaviors in `contenteditable`
     // elements which will editor the DOM and cause our value to be out of sync,
@@ -415,7 +422,7 @@ function BeforePlugin() {
         Hotkeys.isDeleteWordForward(event) ||
         Hotkeys.isItalic(event) ||
         Hotkeys.isRedo(event) ||
-        Hotkeys.isSplitBlock(event) ||
+        // Hotkeys.isSplitBlock(event) ||
         Hotkeys.isTransposeCharacter(event) ||
         Hotkeys.isUndo(event))
     ) {
@@ -455,6 +462,7 @@ function BeforePlugin() {
    */
 
   function onSelect(event, editor, next) {
+    return
     if (isCopying) return
     if (isComposing) return
 
