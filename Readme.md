@@ -45,6 +45,18 @@ It can do this because all of its logic is implemented with a series of plugins,
 
 <br/>
 
+### This fork
+
+This fork is based on Slate 0.65.2 with following PRs merged:
+
+- [#4352](https://github.com/ianstormtaylor/slate/pull/4352) Don't show the placeholder when composing
+
+Packages are published using [gitpkg](https://github.com/ramasilveyra/gitpkg). Current versions are:
+
+- slate: `mochi/slate#slate-v0.65.2-1-gitpkg`
+- slate-history: `mochi/slate#slate-history-v0.65.2-1-gitpkg`
+- slate-react: `mochi/slate#slate-react-v0.65.2-1-gitpkg`
+
 ### Why?
 
 Why create Slate? Well... _(Beware: this section has a few of [my](https://github.com/ianstormtaylor) opinions!)_
